@@ -1,0 +1,288 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | School System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: #f1f5f2;
+            color: #183b2c;
+        }
+
+        header {
+            background: linear-gradient(110deg, #003d2b, #006044);
+            color: white;
+            padding: 22px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        header h1 {
+            color: #ffd45c;
+            font-family: Georgia, serif;
+        }
+
+        header p {
+            margin-top: 6px;
+        }
+
+        .logout {
+            background: #ffd45c;
+            color: #173323;
+            border: none;
+            padding: 12px 23px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .logout:hover {
+            background: white;
+        }
+
+        main {
+            width: 90%;
+            max-width: 1150px;
+            margin: 40px auto;
+        }
+
+        .welcome {
+            background: linear-gradient(120deg, #00452f, #087650);
+            color: white;
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px #003d2b25;
+        }
+
+        .welcome h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .welcome h2 span {
+            color: #ffd45c;
+        }
+
+        .welcome p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .success {
+            display: inline-block;
+            margin-top: 22px;
+            padding: 12px 20px;
+            border-radius: 30px;
+            background: #d8fbe7;
+            color: #086b35;
+            font-weight: bold;
+        }
+
+        .section-title {
+            margin: 35px 0 20px;
+            font-size: 24px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            padding: 28px;
+            border-radius: 15px;
+            box-shadow: 0 5px 18px #0000000d;
+            border-bottom: 4px solid #d9aa36;
+            transition: .2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card .icon {
+            font-size: 35px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            color: #005239;
+        }
+
+        .card p {
+            color: #68776e;
+            line-height: 1.5;
+        }
+
+        footer {
+            background: #00251a;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        footer strong {
+            color: #ffd45c;
+        }
+
+        @media(max-width: 600px) {
+            .welcome {
+                padding: 25px;
+            }
+
+            .welcome h2 {
+                font-size: 25px;
+            }
+
+            main {
+                margin-top: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div>
+        <h1>School System</h1>
+        <p>Learn · Connect · Excel</p>
+    </div>
+
+    <button class="logout" id="logoutButton">
+        Logout
+    </button>
+</header>
+
+<main>
+
+    <section class="welcome">
+        <h2>Welcome, <span id="studentName">Student</span>!</h2>
+
+        <p>
+            Welcome to your student dashboard.
+            We are happy to have you in our school system.
+            Continue learning, manage your activities,
+            and work towards excellence.
+        </p>
+
+        <div class="success" id="successMessage">
+            Login successful!
+        </div>
+    </section>
+
+    <h2 class="section-title">Student Dashboard</h2>
+
+    <section class="cards">
+
+        <div class="card">
+            <div class="icon">📚</div>
+            <h3>My Courses</h3>
+            <p>Access your learning materials and courses.</p>
+        </div>
+
+        <div class="card">
+            <div class="icon">📅</div>
+            <h3>My Schedule</h3>
+            <p>View your school timetable and activities.</p>
+        </div>
+
+        <div class="card">
+            <div class="icon">📊</div>
+            <h3>My Progress</h3>
+            <p>Monitor your academic progress.</p>
+        </div>
+
+        <div class="card">
+            <div class="icon">👤</div>
+            <h3>My Profile</h3>
+            <p>View your student account information.</p>
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    School System © 2026. All rights reserved.
+    <br><br>
+    This website is designed by <strong>Font Art</strong>
+</footer>
+
+<script>
+
+// LOAD STUDENT DASHBOARD DATA
+
+async function loadDashboard() {
+
+    try {
+        const response = await fetch("/dashboard-data", {
+            method: "GET",
+            credentials: "same-origin"
+        });
+
+        if (!response.ok) {
+            window.location.href = "/";
+            return;
+        }
+
+        const data = await response.json();
+
+        document.getElementById("studentName").textContent =
+            data.username;
+
+        document.getElementById("successMessage").textContent =
+            data.message;
+
+    } catch (error) {
+        console.error("Dashboard error:", error);
+        window.location.href = "/";
+    }
+}
+
+// LOGOUT
+
+document.getElementById("logoutButton").addEventListener("click", async function () {
+
+    try {
+        const response = await fetch("/logout", {
+            method: "POST",
+            credentials: "same-origin"
+        });
+
+        if (response.ok) {
+            window.location.href = "/";
+        } else {
+            alert("Logout failed. Please try again.");
+        }
+
+    } catch (error) {
+        alert("Cannot connect to the server.");
+    }
+
+});
+
+loadDashboard();
+
+</script>
+
+</body>
+</html>

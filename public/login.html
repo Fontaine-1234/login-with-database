@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Login | School System</title>
+<style>
+:root{--gold:#ffd45c;--white:#fffdf5}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;color:var(--white);font-family:Arial,Helvetica,sans-serif;background:linear-gradient(90deg,rgba(0,25,18,.16),rgba(0,20,15,.5)),url("images/campus-login.png") center/cover fixed no-repeat}
+.page{min-height:100vh;display:flex;flex-direction:column;position:relative;isolation:isolate}
+.page:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(0,17,13,.85),transparent 22%,transparent 80%,rgba(0,20,15,.25))}
+.topbar{width:min(94%,1500px);margin:auto;padding:24px 0 8px;display:flex;align-items:center;gap:20px}
+.logo{width:88px;height:88px;flex:none;color:var(--gold);filter:drop-shadow(0 0 10px #dba82b66)}
+.brand-divider{height:75px;width:2px;background:linear-gradient(transparent,var(--gold),transparent)}
+.brand h1{font:700 clamp(29px,3vw,46px) Georgia,serif}
+.brand h1 span{color:var(--gold)}
+.brand p{margin-top:10px;font-size:clamp(10px,1vw,16px);letter-spacing:3px;text-transform:uppercase}
+main{width:min(94%,1500px);flex:1;margin:auto;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:5vw;padding:22px 0 34px}
+.welcome{text-align:center;align-self:start;padding-top:5vh;text-shadow:0 3px 18px #0008}
+.welcome h2{font:700 clamp(48px,6.2vw,94px)/1.05 Georgia,serif;letter-spacing:-2px;white-space:nowrap}
+.welcome h2 span{color:var(--gold);font-style:italic}
+.underline{width:280px;max-width:60%;height:4px;margin:20px auto;background:linear-gradient(90deg,transparent,var(--gold),transparent);box-shadow:0 0 14px #ffd45c99}
+.welcome p{font-size:clamp(17px,1.6vw,25px);line-height:1.45}
+.welcome p strong{color:var(--gold)}
+.card{width:100%;max-width:650px;justify-self:end;position:relative;padding:65px clamp(22px,3.2vw,50px) 32px;border:2px solid #ffe18b;border-radius:32px;background:linear-gradient(145deg,#00432fdf,#001e17ed);box-shadow:0 0 13px #ffda68cc,0 0 36px #eab83b55,inset 0 0 28px #ffe17b18;backdrop-filter:blur(13px)}
+.avatar{width:108px;height:108px;position:absolute;left:50%;top:-55px;transform:translateX(-50%);display:grid;place-items:center;border:3px solid var(--gold);border-radius:50%;background:radial-gradient(circle at 35% 25%,#267253,#001f18 70%);box-shadow:0 0 22px #ffd45caa}
+.avatar svg{width:58px;height:58px}
+.heading{text-align:center;margin-bottom:26px}
+.heading h2{font:700 clamp(34px,3.4vw,52px) Georgia,serif}
+.heading h2 span{color:var(--gold)}
+.heading p{margin-top:9px;color:#e4eee8;font-size:clamp(15px,1.3vw,20px)}
+.field{height:67px;display:flex;align-items:center;gap:16px;padding:0 18px;margin:17px 0;border:2px solid #ffe58f;border-radius:21px;background:#00140f77;transition:.2s}
+.field:focus-within{border-color:#fff4b8;box-shadow:0 0 0 4px #ffd55c20,0 0 18px #ffd55c44}
+.field-icon{width:30px;height:30px;flex:none;color:var(--gold)}
+.field-divider{height:34px;width:2px;background:#ffefb8}
+.field input{width:100%;min-width:0;border:0;outline:0;color:white;background:transparent;font-size:18px}
+.field input::placeholder{color:#e0e9e2;opacity:1}
+.toggle{border:0;background:none;color:white;cursor:pointer;padding:5px;font-size:20px}
+.options{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:19px 4px 23px;font-size:15px}
+.remember{display:flex;align-items:center;gap:9px;cursor:pointer}
+.remember input{width:18px;height:18px;accent-color:#e8b72f}
+.forgot{color:var(--gold);font-weight:bold;text-decoration:none}
+.login-btn{width:100%;min-height:66px;border:1px solid #ffe99a;border-radius:50px;color:#172416;background:linear-gradient(110deg,#ffe78c,#f6b92f 52%,#ffe18a);box-shadow:0 6px 22px #f4b52844;font:700 25px Georgia,serif;cursor:pointer;transition:.2s}
+.login-btn:hover{transform:translateY(-2px);filter:brightness(1.06)}
+.login-btn:disabled{opacity:.7;cursor:wait}
+.btn-content{display:inline-flex;align-items:center;gap:12px}
+.btn-content svg{width:27px;height:27px}
+.or{display:flex;align-items:center;gap:16px;margin:23px 8px 17px;color:#fff0b8;font-weight:bold}
+.or:before,.or:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--gold))}
+.or:after{background:linear-gradient(90deg,var(--gold),transparent)}
+.register{min-height:59px;padding:12px;display:flex;justify-content:center;align-items:center;gap:10px;border:2px solid #ffefb8;border-radius:50px;color:white;text-align:center;text-decoration:none;font-size:clamp(13px,1vw,16px)}
+.register:hover{background:#ffd45c1f}
+.register strong{color:var(--gold)}
+.register svg{width:24px;height:24px;flex:none}
+.secure{display:flex;justify-content:center;align-items:center;gap:9px;margin-top:20px;color:#dce9df;font-size:14px}
+.secure svg{width:23px;height:23px;color:var(--gold)}
+.message{display:none;margin:0 0 14px;padding:11px 13px;border-radius:9px;font-size:14px;line-height:1.4}
+.message.show{display:block}.message.error{color:#ffe5e5;background:#7d0f0f55;border:1px solid #ff828299}.message.success{color:#e7ffed;background:#05642d55;border:1px solid #82ffaa99}
+footer{min-height:76px;padding:13px max(3%,calc((100% - 1500px)/2));display:flex;align-items:center;justify-content:space-between;gap:18px;border-top:1px solid #ffdd6ebd;background:#001812e8;color:#f8f4e5;font-size:14px}
+.copyright,.designer{display:flex;align-items:center;gap:10px}
+.footer-icon{width:25px;height:25px;flex:none;color:var(--gold)}
+.designer{font-size:15px;text-align:center}.designer strong{color:var(--gold);font:italic 700 25px Georgia,serif}
+.socials{display:flex;gap:9px}.socials a{width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--gold);border-radius:50%;color:var(--gold);text-decoration:none;font-weight:bold}.socials a:hover{background:var(--gold);color:#10251a}
+@media(max-width:1050px){body{background-attachment:scroll}main{grid-template-columns:1fr;justify-items:center;gap:75px;padding-top:35px}.welcome{padding-top:0}.card{justify-self:center;max-width:620px}footer{flex-wrap:wrap;justify-content:center}}
+@media(max-width:600px){.topbar{justify-content:center;gap:11px;padding-top:18px}.logo{width:62px;height:62px}.brand-divider{height:54px}.brand h1{font-size:26px}.brand p{font-size:9px;letter-spacing:2px;margin-top:6px}main{width:92%;gap:65px;padding:32px 0}.welcome h2{font-size:clamp(43px,11vw,62px);white-space:normal}.welcome p{font-size:16px}.card{padding:58px 17px 25px;border-radius:24px}.avatar{width:86px;height:86px;top:-44px}.avatar svg{width:44px;height:44px}.heading h2{font-size:34px}.field{height:58px;padding:0 12px;gap:11px;border-radius:16px}.field input{font-size:16px}.options{font-size:13px}.login-btn{min-height:58px;font-size:22px}footer{flex-direction:column;text-align:center;padding:16px 10px}.designer{flex-wrap:wrap;justify-content:center}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="topbar">
+  <svg class="logo" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+    <path d="M60 14 14 37l46 23 46-23L60 14Z" fill="currentColor"/>
+    <path d="M32 49v26c17 16 39 16 56 0V49L60 63 32 49Z" fill="currentColor"/>
+    <path d="M105 39v30" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><circle cx="105" cy="74" r="5" fill="currentColor"/>
+    <path d="M16 68C20 89 36 104 53 108M104 68c-4 21-20 36-37 40" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    <path d="m24 81-9-2m17 14-10 1m25 11-7 7m56-31 9-2M88 93l10 1m-25 11 7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  </svg>
+  <div class="brand-divider"></div>
+  <div class="brand"><h1><span>School</span> System</h1><p>Learn · Connect · Excel</p></div>
+</header>
+
+<main>
+  <section class="welcome">
+    <h2>Welcome <span>Back!</span></h2><div class="underline"></div>
+    <p>Login to access your student account<br>and continue your <strong>learning journey.</strong></p>
+  </section>
+
+  <section class="card" aria-labelledby="login-title">
+    <div class="avatar" aria-hidden="true">
+      <svg viewBox="0 0 64 64" fill="none"><path d="M32 32c8.3 0 15-6.7 15-15S40.3 2 32 2 17 8.7 17 17s6.7 15 15 15Z" fill="white"/><path d="M7 59c0-13.8 11.2-25 25-25s25 11.2 25 25v3H7v-3Z" fill="white"/><path d="m9 10 23-8 23 8-23 9L9 10Z" fill="#ffd45c"/></svg>
+    </div>
+    <div class="heading"><h2 id="login-title">Student <span>Login</span></h2><p>Enter your credentials to continue</p></div>
+    <div id="message" class="message" role="status" aria-live="polite"></div>
+
+    <form id="loginForm">
+      <label class="field">
+        <svg class="field-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2H4Z"/></svg>
+        <span class="field-divider"></span>
+        <input name="username" type="text" placeholder="Username" autocomplete="username" maxlength="100" required>
+      </label>
+      <label class="field">
+        <svg class="field-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 10V7a6 6 0 0 1 12 0v3h1a2 2 0 0 1 2 2v9H3v-9a2 2 0 0 1 2-2h1Zm3 0h6V7a3 3 0 0 0-6 0v3Z"/></svg>
+        <span class="field-divider"></span>
+        <input id="password" name="password" type="password" placeholder="Password" autocomplete="current-password" required>
+        <button class="toggle" id="togglePassword" type="button" aria-label="Show password" title="Show password">◉</button>
+      </label>
+      <div class="options">
+        <label class="remember"><input type="checkbox" name="remember"><span>Remember me</span></label>
+        <a class="forgot" href="#" id="forgotLink">Forgot password?</a>
+      </div>
+      <button class="login-btn" id="loginButton" type="submit"><span class="btn-content">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg><span>Login</span>
+      </span></button>
+    </form>
+
+    <div class="or">OR</div>
+    <a class="register" href="register.html">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM3 21a9 9 0 0 1 18 0H3Z"/><path d="M19 7v8m-4-4h8" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      <span>Don't have an account? <strong>Register here</strong></span>
+    </a>
+    <div class="secure"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 4 5v6c0 5.2 3.4 9.2 8 11 4.6-1.8 8-5.8 8-11V5l-8-3Zm0 5a3 3 0 0 1 3 3v1h1v6H8v-6h1v-1a3 3 0 0 1 3-3Z"/></svg><span>Your data is safe and secure</span></div>
+  </section>
+</main>
+
+<footer>
+  <div class="copyright"><svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 4.5A2.5 2.5 0 0 1 5.5 2H11v17H5.5A2.5 2.5 0 0 0 3 21V4.5Zm18 0A2.5 2.5 0 0 0 18.5 2H13v17h5.5a2.5 2.5 0 0 1 2.5 2V4.5Z"/></svg><span>School System &nbsp; © 2026. All rights reserved.</span></div>
+  <div class="designer"><svg class="footer-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20h1.2a2.8 2.8 0 0 0 2.1-4.7 1.2 1.2 0 0 1 .9-2h1.3A4.5 4.5 0 0 0 22 10.8C22 5.9 17.5 2 12 2ZM6.5 13A1.5 1.5 0 1 1 6.5 10a1.5 1.5 0 0 1 0 3Zm3-5A1.5 1.5 0 1 1 9.5 5a1.5 1.5 0 0 1 0 3Zm5 0A1.5 1.5 0 1 1 14.5 5a1.5 1.5 0 0 1 0 3Zm4 4A1.5 1.5 0 1 1 18.5 9a1.5 1.5 0 0 1 0 3Z"/></svg><span>This website is designed by</span><strong>Font Art</strong></div>
+  <nav class="socials" aria-label="Social links"><a href="#" aria-label="Facebook">f</a><a href="#" aria-label="YouTube">▶</a><a href="#" aria-label="X">X</a><a href="#" aria-label="LinkedIn">in</a></nav>
+</footer>
+</div>
+
+
+<script>
+const form = document.getElementById("loginForm");
+const button = document.getElementById("loginButton");
+const message = document.getElementById("message");
+const password = document.getElementById("password");
+
+function showMessage(text, type) {
+    message.textContent = text;
+    message.className = "message show " + type;
+}
+
+// Show or hide password
+document.getElementById("togglePassword").addEventListener("click", function () {
+    const show = password.type === "password";
+
+    password.type = show ? "text" : "password";
+    this.textContent = show ? "◎" : "◉";
+    this.setAttribute("aria-label", show ? "Hide password" : "Show password");
+});
+
+// Forgot password
+document.getElementById("forgotLink").addEventListener("click", function (event) {
+    event.preventDefault();
+
+    showMessage(
+        "Please contact your school administrator to reset your password.",
+        "error"
+    );
+});
+
+// LOGIN
+form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const username = form.elements.username.value.trim();
+    const passwordValue = form.elements.password.value;
+
+    if (!username || !passwordValue) {
+        showMessage("Please enter your username and password.", "error");
+        return;
+    }
+
+    button.disabled = true;
+    button.querySelector(".btn-content span").textContent = "Signing in...";
+    message.className = "message";
+
+    try {
+        const response = await fetch("/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "same-origin",
+            body: JSON.stringify({
+                username: username,
+                password: passwordValue
+            })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            showMessage(result.message || "Login failed.", "error");
+            return;
+        }
+
+        showMessage("Login successful! Opening dashboard...", "success");
+
+        // OPEN DASHBOARD HTML
+        window.location.href = result.redirect || "/dashboard";
+
+    } catch (error) {
+        console.error("Login error:", error);
+
+        showMessage(
+            "Cannot connect to the server. Please try again.",
+            "error"
+        );
+
+    } finally {
+        button.disabled = false;
+        button.querySelector(".btn-content span").textContent = "Login";
+    }
+});
+</script>
+</body>
+</html>
